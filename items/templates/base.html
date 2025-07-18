@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QuickMart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* 🌑 Navbar */
+        .navbar {
+            background-color: #232F3E;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 12px 20px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(55, 54, 54, 0.3);
+        }
+
+        .navbar .brand {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #b7b1b1;
+            text-decoration: none;
+            animation: glow 2s infinite alternate;
+            margin-right: 25px;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px #00e0ff;
+            }
+            to {
+                text-shadow: 0 0 15px #00e0ff;
+            }
+        }
+
+        .nav-section {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-section a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 5px 10px;
+            white-space: nowrap;
+            transition: color 0.3s;
+        }
+
+        .nav-section a:hover {
+            color: #00bcd4;
+        }
+
+        /* 🧱 Page content spacing */
+        .content {
+            padding-top: 80px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        /* 📱 Mobile: vertical stack */
+        @media (max-width: 600px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-section {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+                margin-top: 10px;
+            }
+
+            .nav-section a {
+                margin-right: 15px;
+                margin-bottom: 8px;
+            }
+        }
+
+               
+        .nav-link-button {
+            background: none;
+            border: none;
+            color: #e0e0e0;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 0 10px;
+            padding: 5px 0;
+            white-space: nowrap;
+            transition: color 0.3s;
+        }
+
+        .nav-link-button:hover {
+            color: #00bcd4;
+        }
+
+    </style>
+    <style>
+    /* 📦 Centered form wrapper */
+    .auth-container {
+        max-width: 400px;
+        margin: 60px auto;
+        padding: 30px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    /* 📄 Page title */
+    .auth-container h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #111;
+        font-size: 1.5rem;
+    }
+
+    /* 🧾 Form fields */
+    .auth-container form input[type="text"],
+    .auth-container form input[type="email"],
+    .auth-container form input[type="password"] {
+        width: 100%;
+        padding: 12px 10px;
+        margin: 10px 0 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.95rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .auth-container form input:focus {
+        border-color: #f90;
+        outline: none;
+    }
+
+    /* ✅ Button */
+    .auth-container form button {
+        width: 100%;
+        background-color: #f0c14b;
+        border: 1px solid #a88734;
+        color: #111;
+        padding: 10px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .auth-container form button:hover {
+        background-color: #ddb347;
+    }
+
+    /* ✅ Link below button */
+    .auth-container .form-links {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .auth-container .form-links a {
+        color: #007185;
+        text-decoration: none;
+    }
+
+    .auth-container .form-links a:hover {
+        text-decoration: underline;
+    }
+
+        .alert {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .alert.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+    </style>
+
+
+
+</head>
+<body>
+
+<!-- 🔷 Navbar -->
+<nav class="navbar">
+    <div class="nav-section">
+        <a href="{% url 'home' %}" class="brand">🌟 QuickMart</a>
+        <a href="{% url 'home' %}">🏠 Home</a>
+        <a href="{% url 'profile' %}">👤 Profile</a>
+    </div>
+
+    <div class="nav-section">
+        <a href="{% url 'cart' %}">🛒 Cart</a>
+        <a href="{% url 'sell' %}">📤 Sell Item</a>
+        {% if user.is_authenticated %}
+           
+        <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="nav-link-button">🔓 Logout</button>
+        </form>
+     
+        {% else %}
+         <a href="{% url 'login' %}">🔐 Login</a>
+        {% endif %}
+
+    </div>
+</nav>
+
+<!-- 📦 Page Content -->
+<div class="content">
+    {% block content %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+
+    {% endblock %}
+</div>
+
+</body>
+</html>

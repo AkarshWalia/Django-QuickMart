@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="margin-bottom: 20px; font-size: 1.8rem; color: #333;">🛍️ Latest Deals on QuickMart</h2>
+
+<div class="product-grid">
+    {% for item in items %}
+    <div class="product-card">
+        <div class="product-image">
+            
+            <img src="{{ item.images.first.image.url }}" alt="{{ item.name }}">
+        </div>
+        <div class="product-info">
+            <h3>{{ item.name }}</h3>
+            <p class="price">₹{{ item.price }}</p>
+            <p>{{ item.description|truncatewords:20 }}{% if item.description|length > 20 %}...{% endif %}</p>
+            <p class="meta">
+                <span><strong>Seller:</strong> {{ item.seller }}</span><br>
+                <span><strong>Date:</strong> {{ item.date_posted|date:"M d, Y" }}</span>
+            </p>
+            <button class="buy-btn">
+                <a href="{% url 'view' item.pk %}">View Item</a>
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+<div style="text-align: center; margin: 30px 0;">
+    {% if items.has_previous %}
+        <a href="?page=1" style="margin: 0 8px;">⏮️ First</a>
+        <a href="?page={{ items.previous_page_number }}" style="margin: 0 8px;">◀️ Prev</a>
+    {% endif %}
+
+    <span style="margin: 0 10px;">Page {{ items.number }} of {{ items.paginator.num_pages }}</span>
+
+    {% if items.has_next %}
+        <a href="?page={{ items.next_page_number }}" style="margin: 0 8px;">Next ▶️</a>
+        <a href="?page={{ items.paginator.num_pages }}" style="margin: 0 8px;">Last ⏭️</a>
+    {% endif %}
+</div>
+
+
+<style>
+    .product-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+
+    .product-card {
+        background-color: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .product-card:hover {
+        transform: scale(1.02);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-bottom: 1px solid #eee;
+    }
+
+    .product-info {
+        padding: 15px 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .product-info h3 {
+        font-size: 1.1rem;
+        margin: 0 0 10px;
+        color: #222;
+    }
+
+        .product-info a {
+            color: #121111;
+            text-decoration: none;
+            font-weight: 500;
+            margin: 5px 10px;
+            white-space: nowrap;
+            transition: color 0.3s;
+        }
+
+
+    .price {
+        font-size: 1.2rem;
+        color: #b12704;
+        font-weight: bold;
+        margin: 5px 0;
+    }
+
+    .desc {
+        font-size: 0.9rem;
+        color: #444;
+        margin: 10px 0;
+        min-height: 60px;
+    }
+
+    .meta {
+        font-size: 0.8rem;
+        color: #777;
+        margin-top: auto;
+    }
+
+    .buy-btn {
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #f0c14b;
+        border: none;
+        border-radius: 5px;
+        color: #000;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .buy-btn:hover {
+        background-color: #ddb347;
+    }
+
+    @media (max-width: 768px) {
+        .product-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+
+{% endblock %}

@@ -1,0 +1,13 @@
+# render.yaml
+services:
+  - type: web
+    name: quickmart
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn quickmart.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: quickmart.settings
+      - key: PYTHON_VERSION
+        value: 3.10
+    staticPublishPath: staticfiles

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+/* Amazon-style look */
+.cart-container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.alert {
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+.alert.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.cart-item {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-item-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cart-item-price {
+    font-size: 16px;
+    color: #b12704;
+}
+
+.cart-total {
+    margin-top: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: right;
+}
+</style>
+
+<div class="cart-container">
+    <h2>Your Shopping Cart</h2>
+
+    <!-- Django messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if cart_items %}
+        {% for cart_item in cart_items %}
+            <div class="cart-item">
+                <div>
+                    <div class="cart-item-name">{{ cart_item.item.name }}</div>
+                    <div>Qty: {{ cart_item.quantity }}</div>
+                </div>
+                <div class="cart-item-price">₹{{ cart_item.item.price }}</div>
+            </div>
+        {% endfor %}
+
+        <div class="cart-total">
+            Total: ₹{{ total_price }}
+        </div>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}

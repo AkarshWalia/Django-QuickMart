@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^9*11vnurb%^broxq!bw^92#hqa2fl!4#34gnnofqbi&u9nqt^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['django-quickmart.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
